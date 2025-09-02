@@ -1,13 +1,17 @@
 from fastapi import FastAPI
-from models import Students, Professors, Courses, Enrollments
-from routes import router
-from database import Base, engine, SessionLocal
-from sqlalchemy.orm import Session
+from routes.courses import course_router
+from routes.enrollment import enrollment_router
+from routes.professors import professor_router
+from routes.student import student_router
 
-
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-app.include_router(router)
+app.include_router(student_router)
+
+app.include_router(professor_router)
+
+app.include_router(course_router)
+
+app.include_router(enrollment_router)
 
 
