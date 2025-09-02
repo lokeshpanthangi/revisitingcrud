@@ -23,7 +23,23 @@ def get_courses():
     return response.data
 
 @course_router.post("/create_new_course")
-def new_course(course : CourseSchema):
+def create_course(course : CourseSchema):
     data = course.dict()
     response = supabase.table("courses").insert(data).execute()
     return response.data
+
+@course_router.get("/get_course/{course_id}")
+def read_course(course_id : int):
+    response = supabase.table("courses").select("*").eq("id", course_id).single().execute()
+    return response.data
+
+@course_router.put("/update_course/{course_id}")
+def update_course(course_id: int, course: CourseSchema):
+    data = course.dict()
+    response = supabase.table("courses").update(data).eq("id", course_id).execute()
+    return response.data
+
+@course_router.delete("/delete_course/{course_id}")
+def delete_course(course_id: int):
+    response = supabase.table("courses").delete().eq("id", course_id).execute()
+    return {"message": "Course deleted successfully"}
